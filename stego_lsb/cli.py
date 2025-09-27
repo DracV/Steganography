@@ -66,7 +66,7 @@ def steglsb(ctx: click.Context, hide: bool, recover: bool, analyze: bool, input_
 
 @main.command()
 @click.option("--input", "-i", "image_path", help="Path to an image")
-@click.option("--lsb-count", "-n", default=2, show_default=2, type=int, help="How many LSBs to display")
+@click.option("--lsb-count", "-n", default=2, show_default=True, type=int, help="How many LSBs to display")
 @click.pass_context
 def stegdetect(ctx: click.Context, image_path: str, lsb_count: int) -> None:
     """Shows the n least significant bits of image"""
