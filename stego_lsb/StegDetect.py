@@ -37,7 +37,9 @@ def show_lsb(image_path: str, n: int) -> None:
             for rgb in image_data
         ]
 
-        image.putdata(color_data)
+        # Image.putdata expects Sequence[Sequence[int]] but mypy thinks it's Sequence[int]
+        # this isn't consistent in all Python versions, so we actually need to ignore the unused-ignore as well
+        image.putdata(color_data)  # type: ignore[arg-type, unused-ignore]
         log.debug(f"Runtime: {time() - start:.2f}s")
         file_name, file_extension = os.path.splitext(image_path)
         image.save(f"{file_name}_{n}LSBs{file_extension}")

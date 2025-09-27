@@ -75,7 +75,7 @@ def hide_message_in_image(input_image: Image.Image, message: Union[str, bytes], 
     """Hides the message in the input image and returns the modified image object."""
     start = time()
     num_channels = len(input_image.getbands())
-    flattened_color_data = [v for t in input_image.getdata() for v in t]
+    flattened_color_data = [v for t in list(input_image.getdata()) for v in t]
 
     # We add the size of the input file to the beginning of the payload.
     message_size = len(message)
@@ -122,7 +122,7 @@ def recover_message_from_image(input_image: Image.Image, num_lsb: int) -> bytes:
     """Returns the message from the steganographed image"""
     start = time()
     num_channels = len(input_image.getbands())
-    color_data = [v for t in input_image.getdata() for v in t]
+    color_data = [v for t in list(input_image.getdata()) for v in t]
 
     file_size_tag_size = bytes_in_max_file_size(input_image, num_lsb, num_channels)
     tag_bit_height = roundup(8 * file_size_tag_size / num_lsb)
@@ -139,7 +139,7 @@ def recover_message_from_image(input_image: Image.Image, num_lsb: int) -> bytes:
 
     start = time()
     data = lsb_deinterleave_list(color_data, 8 * (bytes_to_recover + file_size_tag_size), num_lsb)[
-           file_size_tag_size:]
+        file_size_tag_size:]
     log.debug(f"{f'{bytes_to_recover} bytes recovered':<30} in {time() - start:.2f}s")
     return data
 
